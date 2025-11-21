@@ -38,15 +38,19 @@
         }
         
         .avatar {
-            width: 80px;
-            height: 80px;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.3);
             margin: 0 auto 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 36px;
+            overflow: hidden;
+            border: 4px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         
         h1 {
@@ -146,7 +150,9 @@
 <body>
     <div class="widget-container">
         <div class="header">
-            <div class="avatar">🎨</div>
+            <div class="avatar">
+                <img src="https://sun9-65.userapi.com/s/v1/ig2/zTn5OZkhd1A0qQpf8YVBxYanaAZJ1A6T6FwrhNa4mHExtwTyHQMm9v7SK1CWxTBuPSZoENfHdK-bAQFUrp3XU5s-.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080,1280x1280,1440x1440,2560x2560&from=bu&cs=2560x0" alt="Аватар">
+            </div>
             <h1>Мульт Линк</h1>
             <p class="subtitle">Все важные ссылки в одном месте</p>
         </div>
