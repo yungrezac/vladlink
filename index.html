@@ -3,213 +3,376 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>vladlink</title>
+    <meta name="theme-color" content="#120c1c">
+    <title>Шоколадик | Minecraft Profile</title>
+    
+    <!-- Пиксельный шрифт Minecraft-style -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
+        :root {
+            --mc-bg: #120c1c; /* Темный фон (как в Энде) */
+            --mc-ui-bg: rgba(0, 0, 0, 0.75);
+            --mc-btn-bg: #3a3a3a;
+            --mc-btn-border-light: #6e6e6e;
+            --mc-btn-border-dark: #1f1f1f;
+            --mc-text: #ffffff;
+            --mc-text-shadow: 2px 2px 0px #000000;
+            --mc-accent: #55ff55; /* Зеленый цвет текста MC */
+            --mc-splash: #ffff55; /* Желтый сплеш */
+            --mc-diamond: #3cf3f0;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            cursor: crosshair; /* Курсор-прицел */
         }
-        
+
         body {
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            font-family: 'VT323', monospace;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            color: var(--mc-text);
+            background-color: #1a0f2e;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(42, 26, 66, 0.8) 0%, rgba(10, 5, 20, 1) 100%),
+                repeating-linear-gradient(transparent, transparent 50px, rgba(0,0,0,0.2) 50px, rgba(0,0,0,0.2) 53px),
+                repeating-linear-gradient(90deg, transparent, transparent 50px, rgba(0,0,0,0.2) 50px, rgba(0,0,0,0.2) 53px);
+            overflow-x: hidden;
+            position: relative;
         }
-        
-        .widget-container {
+
+        /* Частицы портала (задний фон) */
+        .portal-particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #dba5ff;
+            opacity: 0.6;
+            animation: floatUp 8s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(1); opacity: 0; }
+            20% { opacity: 0.8; }
+            80% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) scale(0.5); opacity: 0; }
+        }
+
+        /* Основной контейнер - стиль меню Minecraft */
+        .mc-container {
             width: 100%;
-            max-width: 400px;
-            background-color: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
+            max-width: 450px;
+            background: rgba(30, 30, 30, 0.9);
+            border: 4px solid #c6c6c6;
+            outline: 4px solid #000;
+            padding: 30px 20px;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            image-rendering: pixelated; /* Для четкости */
         }
-        
-        .header {
-            background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
-            padding: 25px 20px;
+
+        /* Декоративные уголки рамки */
+        .mc-container::before {
+            content: "";
+            position: absolute;
+            top: -4px; left: -4px; right: -4px; bottom: -4px;
+            border: 4px solid transparent;
+            box-shadow: inset 0 0 0 4px #5d5d5d;
+            pointer-events: none;
+        }
+
+        /* Хедер профиля */
+        .profile-header {
             text-align: center;
-            color: white;
+            margin-bottom: 25px;
+            position: relative;
         }
-        
+
+        .avatar-wrapper {
+            position: relative;
+            width: 110px;
+            height: 110px;
+            margin: 0 auto 10px;
+        }
+
         .avatar {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            margin: 0 auto 15px;
-            overflow: hidden;
-            border: 4px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        
-        .avatar img {
             width: 100%;
             height: 100%;
+            /* Квадратный аватар в стиле MC */
+            border-radius: 0; 
             object-fit: cover;
+            border: 4px solid #fff;
+            box-shadow: 4px 4px 0px #000;
         }
-        
+
         h1 {
-            font-size: 24px;
-            margin-bottom: 5px;
-            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            font-size: 42px;
+            font-weight: 400;
+            margin-bottom: 0;
+            text-shadow: 3px 3px 0 #000;
+            letter-spacing: 1px;
         }
-        
+
+        /* Splash Text (желтый прыгающий текст) */
+        .splash-text {
+            font-size: 22px;
+            color: var(--mc-splash);
+            text-shadow: 2px 2px 0 #3f3f00;
+            transform: rotate(-5deg);
+            animation: splashPulse 0.8s alternate infinite ease-in-out;
+            position: absolute;
+            top: 20px;
+            right: -20px;
+            width: 150px;
+            text-align: center;
+            pointer-events: none;
+        }
+
+        @keyframes splashPulse {
+            0% { transform: rotate(-5deg) scale(1); }
+            100% { transform: rotate(-5deg) scale(1.1); }
+        }
+
         .subtitle {
-            font-size: 14px;
-            opacity: 0.9;
+            font-size: 20px;
+            color: #aaaaaa;
+            text-shadow: 2px 2px 0 #000;
         }
-        
-        .links-container {
-            padding: 20px;
+
+        /* Группы ссылок */
+        .section-label {
+            font-size: 20px;
+            text-transform: uppercase;
+            color: var(--mc-text);
+            text-shadow: 2px 2px 0 #000;
+            margin: 20px 0 8px 0;
+            border-bottom: 2px solid #555;
+            padding-bottom: 2px;
         }
-        
-        .section-title {
-            font-size: 16px;
-            color: #6a11cb;
-            margin: 20px 0 10px;
-            padding-left: 10px;
-            border-left: 3px solid #6a11cb;
+
+        .links-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
-        
-        .link-item {
+
+        /* Стиль кнопок Minecraft */
+        .link-card {
             display: flex;
             align-items: center;
-            background-color: white;
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 12px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
+            background: #565656; /* Серый камень */
+            padding: 10px;
             text-decoration: none;
-            color: #333;
+            color: var(--mc-text);
+            position: relative;
+            transition: all 0.1s;
+            height: 72px;
+            
+            /* Эффект 3D кнопки */
+            border-top: 4px solid #7c7c7c;
+            border-left: 4px solid #7c7c7c;
+            border-bottom: 4px solid #2a2a2a;
+            border-right: 4px solid #2a2a2a;
+            box-shadow: 4px 4px 0 #000;
         }
-        
-        .link-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+
+        .link-card:hover {
+            background: #686868;
+            border-color: #a0a0a0; /* Подсветка */
+            border-bottom-color: #353535;
+            border-right-color: #353535;
         }
-        
-        .icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
+
+        .link-card:active {
+            transform: translate(4px, 4px);
+            box-shadow: none;
+            border-top: 4px solid #2a2a2a;
+            border-left: 4px solid #2a2a2a;
+            border-bottom: 4px solid #7c7c7c;
+            border-right: 4px solid #7c7c7c;
+        }
+
+        .icon-box {
+            width: 44px;
+            height: 44px;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 24px;
             margin-right: 15px;
-            font-size: 20px;
-            color: white;
+            flex-shrink: 0;
+            background: rgba(0,0,0,0.3);
+            border: 2px solid rgba(0,0,0,0.5);
         }
-        
-        .donate .icon {
-            background: linear-gradient(135deg, #FF416C 0%, #FF4B2B 100%);
-        }
-        
-        .social .icon {
-            background: linear-gradient(135deg, #0088cc 0%, #00aced 100%);
-        }
-        
-        .music .icon {
-            background: linear-gradient(135deg, #FF9800 0%, #FF5722 100%);
-        }
-        
-        .link-text {
+
+        /* Цвета иконок */
+        .donate .icon-box { color: #ff5555; }
+        .social .icon-box { color: #55ff55; }
+        .music .icon-box { color: #ffaa00; }
+        .vk-music .icon-box { color: #5555ff; }
+
+        .link-content {
             flex: 1;
         }
-        
+
         .link-title {
-            font-weight: 600;
-            font-size: 16px;
-            margin-bottom: 3px;
+            font-size: 24px;
+            margin-bottom: -4px;
+            text-shadow: 2px 2px 0 #000;
         }
-        
+
         .link-desc {
-            font-size: 12px;
-            color: #777;
-        }
-        
-        .arrow {
-            color: #aaa;
             font-size: 18px;
+            color: #aaaaaa;
+            text-shadow: 1px 1px 0 #000;
         }
-        
+
+        /* Пиксельная стрелочка */
+        .action-icon {
+            opacity: 0.6;
+            font-size: 18px;
+            margin-right: 5px;
+        }
+
         .footer {
+            margin-top: 30px;
             text-align: center;
-            padding: 15px;
-            font-size: 12px;
-            color: #888;
-            border-top: 1px solid #eee;
+            font-size: 18px;
+            color: #777;
+            text-shadow: 1px 1px 0 #000;
         }
+
+        .footer span {
+            color: #ff5555;
+            display: inline-block;
+            animation: heartBeat 1.5s infinite;
+        }
+
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        /* Блок майнкрафт-травы снизу (декор) */
+        .grass-block-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            background: #5d3e23; /* Земля */
+            border-top: 8px solid #4a8f28; /* Трава */
+            z-index: 100;
+            image-rendering: pixelated;
+        }
+
     </style>
 </head>
 <body>
-    <div class="widget-container">
-        <div class="header">
-            <div class="avatar">
-                <img src="https://sun9-65.userapi.com/s/v1/ig2/zTn5OZkhd1A0qQpf8YVBxYanaAZJ1A6T6FwrhNa4mHExtwTyHQMm9v7SK1CWxTBuPSZoENfHdK-bAQFUrp3XU5s-.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080,1280x1280,1440x1440,2560x2560&from=bu&cs=2560x0" alt="Аватар">
+
+    <!-- Частицы портала (генерируются JS или статично) -->
+    <div class="portal-particle" style="left: 10%; animation-delay: 0s;"></div>
+    <div class="portal-particle" style="left: 30%; animation-delay: 2s;"></div>
+    <div class="portal-particle" style="left: 70%; animation-delay: 4s;"></div>
+    <div class="portal-particle" style="left: 50%; animation-delay: 1s;"></div>
+    <div class="portal-particle" style="left: 90%; animation-delay: 3s;"></div>
+
+    <div class="mc-container">
+        <!-- Шапка профиля -->
+        <div class="profile-header">
+            <div class="avatar-wrapper">
+                <img src="https://sun9-65.userapi.com/s/v1/ig2/zTn5OZkhd1A0qQpf8YVBxYanaAZJ1A6T6FwrhNa4mHExtwTyHQMm9v7SK1CWxTBuPSZoENfHdK-bAQFUrp3XU5s-.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080,1280x1280,1440x1440,2560x2560&from=bu&cs=2560x0" alt="Шоколадик" class="avatar">
+                <!-- Splash Text (Прыгающая надпись) -->
+                <div class="splash-text">MINECRAFT STREAMS!</div>
             </div>
             <h1>Шоколадик</h1>
-            <p class="subtitle">Все важные ссылки в одном месте</p>
+            <p class="subtitle">>> Стример по кубам <<</p>
         </div>
-        
-        <div class="links-container">
-            <h2 class="section-title">Донаты</h2>
-            <a href="https://www.donationalerts.com/r/jacosdeads" class="link-item donate" target="_blank">
-                <div class="icon">💖</div>
-                <div class="link-text">
+
+        <div class="links-wrapper">
+            
+            <div class="section-label">Inventory</div>
+            
+            <a href="https://www.donationalerts.com/r/jacosdeads" class="link-card donate" target="_blank">
+                <div class="icon-box">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <div class="link-content">
                     <div class="link-title">Donation Alerts</div>
-                    <div class="link-desc">Поддержать дэпами</div>
+                    <div class="link-desc">Закинь алмазов</div>
                 </div>
-                <div class="arrow">›</div>
+                <div class="action-icon">></div>
             </a>
-            
-            <h2 class="section-title">Социальные сети</h2>
-            <a href="https://t.me/shokoladikx" class="link-item social" target="_blank">
-                <div class="icon">✈️</div>
-                <div class="link-text">
+
+            <div class="section-label">Server Chat</div>
+
+            <a href="https://t.me/shokoladikx" class="link-card social" target="_blank">
+                <div class="icon-box">
+                    <i class="fab fa-telegram-plane"></i>
+                </div>
+                <div class="link-content">
                     <div class="link-title">Telegram</div>
-                    <div class="link-desc">Обычно там нечего нет</div>
+                    <div class="link-desc">Логово стримера</div>
                 </div>
-                <div class="arrow">›</div>
+                <div class="action-icon">></div>
             </a>
-            
-            <h2 class="section-title">Музыка</h2>
-            <a href="https://music.yandex.ru/artist/24865039?utm_medium=copy_link" class="link-item music" target="_blank">
-                <div class="icon">🎵</div>
-                <div class="link-text">
+
+            <div class="section-label">Music Disc</div>
+
+            <a href="https://music.yandex.ru/artist/24865039?utm_medium=copy_link" class="link-card music" target="_blank">
+                <div class="icon-box">
+                    <i class="fab fa-yandex"></i>
+                </div>
+                <div class="link-content">
                     <div class="link-title">Яндекс Музыка</div>
-                    <div class="link-desc">Слушайте плизь</div>
+                    <div class="link-desc">C418 отдыхает</div>
                 </div>
-                <div class="arrow">›</div>
+                <div class="action-icon">></div>
             </a>
-            
-            <a href="https://share.zvuk.com/cLQ0/69etl4fo" class="link-item music" target="_blank">
-                <div class="icon">🎶</div>
-                <div class="link-text">
+
+            <a href="https://share.zvuk.com/cLQ0/69etl4fo" class="link-card music" target="_blank">
+                <div class="icon-box">
+                    <i class="fas fa-music"></i>
+                </div>
+                <div class="link-content">
                     <div class="link-title">Звук</div>
                     <div class="link-desc">Музыка на Zvuk</div>
                 </div>
-                <div class="arrow">›</div>
+                <div class="action-icon">></div>
             </a>
-            
-            <a href="https://vk.com/artist/3452369435426310531" class="link-item music" target="_blank">
-                <div class="icon">🎧</div>
-                <div class="link-text">
-                    <div class="link-title">ВКонтакте</div>
-                    <div class="link-desc">Музыка ВК</div>
+
+            <a href="https://vk.com/artist/3452369435426310531" class="link-card vk-music" target="_blank">
+                <div class="icon-box">
+                    <i class="fab fa-vk"></i>
                 </div>
-                <div class="arrow">›</div>
+                <div class="link-content">
+                    <div class="link-title">ВКонтакте</div>
+                    <div class="link-desc">VK плейлист</div>
+                </div>
+                <div class="action-icon">></div>
             </a>
+
         </div>
-        
+
         <div class="footer">
-            Создано с ❤️ от "Броу? Шоколадик?"
+            Crafted with <span>❤️</span> by "Броу? Шоколадик?"
         </div>
     </div>
+    
+    <!-- Декор снизу -->
+    <div class="grass-block-footer"></div>
+
 </body>
 </html>
